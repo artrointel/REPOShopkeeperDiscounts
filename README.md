@@ -12,10 +12,13 @@ Open **Mods → ShopkeeperDiscounts** in REPOConfig on the host. Settings are al
 | --- | --- | --- | --- |
 | `ChancePercent` | 0–100, integer | 70 | Positive verdict chance for each valid shopkeeper scan. 0 always fails; 100 always succeeds. Native chance is 1/3, approximately 33.33%. |
 | `AttemptsPerShop` | 0–10, integer | 5 | Total scan attempts shared by the entire lobby for each shop. 0 disables discount attempts. This is not a per-player allowance or a successful-discount count. |
+| `BreakAfterFailures` | 1-5, integer | 1 | Cumulative failed verdicts on the same physical item before the native destruction effect is allowed. Shared by all players. Successful discounts do not reset it. |
 
 Changes apply to the next verdict/new request without restarting the game. An accepted scan may finish after the limit is reduced. Used attempts are never refunded when settings change. A new shop receives a fresh allowance through the native shopkeeper instance.
 
-The native presentation gesture, discount amount, minimum reduction, item reactions, failure consequences, effects, price synchronization, and checkout remain unchanged. A failed verdict can still lead to native item damage/destruction. This mod does not discount every shop item automatically or add free upgrades.
+Failure counts belong to individual physical items, not item types or players. For example, with `BreakAfterFailures=3`, failure, success, failure, failure on the same item allows the native destruction effect on its third failure. A different copy has its own count. Counts end when that item is destroyed/replaced and are not persisted in save files. The break threshold is captured at each verdict; changing it does not retroactively change an ongoing rejection.
+
+The native presentation gesture, discount amount, minimum reduction, item reactions, price synchronization, and checkout remain unchanged. Before the failure threshold, rejection/shaking/tossing still play, but the shopkeeper does not apply the native exploding-item effect. At the threshold, that original effect and its timing resume. The setting controls shopkeeper rejection destruction, not general protection from unrelated damage. This mod does not discount every shop item automatically or add free upgrades.
 
 ## Dependencies and host-only behavior
 
@@ -25,7 +28,7 @@ Install on the host:
 - [REPOConfig 1.2.7 by REPOModding](https://thunderstore.io/c/repo/p/REPOModding/REPOConfig/)
 - REPOConfig's MenuLib 2.6.0 dependency
 
-The old nickklmao REPOConfig listing is deprecated; use the community-maintained REPOModding package. Both settings are ordinary BepInEx ConfigEntry<int> values with AcceptableValueRange, as documented by REPOConfig. No custom UI, RPC, prefab, or Photon stream is introduced. A modded non-host keeps native decisions; its local settings do not control the lobby.
+The old nickklmao REPOConfig listing is deprecated; use the community-maintained REPOModding package. All three settings are ordinary BepInEx ConfigEntry<int> values with AcceptableValueRange, as documented by REPOConfig. No custom UI, RPC, prefab, or Photon stream is introduced. A modded non-host keeps native decisions; its local settings do not control the lobby.
 
 ## Build
 
@@ -64,6 +67,6 @@ No development item spawns, F8 probes, or in-game test shortcuts are included in
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Pack-Thunderstore.ps1 -NoRestore
 ```
 
-Creates `artifacts/ShopkeeperDiscounts-0.1.0.zip` from Release without deploying. The included simple development icon can be replaced before public release. The manifest links to the source repository. The package has not been published to Thunderstore.
+Creates `artifacts/ShopkeeperDiscounts-0.1.1.zip` from Release without deploying. The included simple development icon can be replaced before public release. The manifest links to the source repository. The package has not been published to Thunderstore.
 
 See [the implementation notes](planning/README.md) and [manual test plan](planning/test-plan.md). Automated checks do not replace actual host/unmodded-client gameplay or verification of the settings UI in the game.

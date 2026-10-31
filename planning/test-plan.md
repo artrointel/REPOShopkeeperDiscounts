@@ -14,3 +14,14 @@
 12. If used with RaiseToUpgrade or other shopkeeper mods, check for overlapping gestures and Harmony conflicts. Test standalone first.
 
 Automated verification is not proof of actual multiplayer feedback or settings-menu behavior. Capture host and vanilla-client logs and one positive/negative scan before public release.
+
+## Per-item break counter
+
+- Confirm REPOConfig shows BreakAfterFailures with default 1, lower bound 1 and upper bound 5, and persists the selection after restart.
+- With chance 0, ten attempts and threshold 3, fail on item A twice. Each rejection must finish normally, with no exploding affect or destruction caused by that rejection. Fail a third time on A and verify the native effect is applied and destroys it using stock timing.
+- Alternate failures on two separate copies A/B of the same item type. A's failures must not accumulate on B. Alternate players on A and verify they share A's failure count.
+- On a valid non-free item, interleave a successful discount between failures and confirm it does not reset the count. Success must not apply a rejection effect or increase failures.
+- Check thresholds 1 and 5. At 1, the first failure retains stock behavior; at 5, the first four failures must not arm the native destruction effect.
+- Change the threshold after a verdict but before the delayed rejection finishes. The current verdict keeps its original decision; the next verdict uses the new setting and retained failure count.
+- Repeat in a host-only mixed lobby. Both screens must see ordinary rejection animations below threshold with no delayed explosion, and the same native exploding effect at threshold. Test late join before and after threshold.
+- Destroy/replace or reroll an item and confirm the replacement starts with zero failures. An interrupted scan before a verdict must not add a failure. Unrelated damage/destruction is not suppressed.

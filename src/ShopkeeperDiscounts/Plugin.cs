@@ -10,7 +10,7 @@ public sealed class Plugin : BaseUnityPlugin
 {
     public const string PluginGuid = "artrointel.ShopkeeperDiscounts";
     public const string PluginName = "ShopkeeperDiscounts";
-    public const string PluginVersion = "0.1.0";
+    public const string PluginVersion = "0.1.1";
     internal static DiscountSettings Settings { get; private set; } = null!;
     private Harmony? _harmony;
 
@@ -22,7 +22,7 @@ public sealed class Plugin : BaseUnityPlugin
         {
             _ = ShopBindings.Attempts;
             _harmony.PatchAll();
-            Logger.LogInfo($"{PluginName} v{PluginVersion} loaded. Host settings: {Settings.ChancePercent.Value}% chance, {Settings.AttemptsPerShop.Value} attempts per shop.");
+            Logger.LogInfo($"{PluginName} v{PluginVersion} loaded. Host settings: {Settings.ChancePercent.Value}% chance, {Settings.AttemptsPerShop.Value} attempts per shop, break after {Settings.BreakAfterFailures.Value} failures per item.");
         }
         catch (Exception exception)
         {

@@ -1,8 +1,8 @@
 {
   "name": "ShopkeeperDiscounts",
-  "version_number": "0.1.0",
+  "version_number": "0.1.1",
   "website_url": "https://github.com/artrointel/REPOShopkeeperDiscounts",
-  "description": "Tune the vanilla shopkeeper discount chance (0-100%) and attempts per shop (0-10) through REPOConfig. Only the host needs the mod; friends can stay vanilla.",
+  "description": "Configure shopkeeper discount chance, attempts per shop, and failures before an item breaks through REPOConfig. Only the host installs; friends can stay vanilla.",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2305",
     "REPOModding-REPOConfig-1.2.7"

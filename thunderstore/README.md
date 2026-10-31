@@ -8,12 +8,13 @@ Use REPOConfig's **Mods → ShopkeeperDiscounts** settings on the host:
 | --- | --- | --- |
 | ChancePercent | 0–100% | 70% |
 | AttemptsPerShop | 0–10 | 5 |
+| BreakAfterFailures | 1-5 failures per item | 1 |
 
 Attempts are shared by the entire lobby for each shop. Both successful and failed accepted scans consume an attempt. **0 attempts disables the ritual**; 0% chance always fails, and 100% always succeeds for valid items.
 
-Settings apply to the next verdict/new request. Used attempts are not refunded when settings change, and an already accepted scan may finish. A new shop resets the allowance normally.
+Settings apply to the next verdict/new request. Used attempts are not refunded when settings change, and an already accepted scan may finish. A new shop resets the allowance normally. A break-threshold change applies to the next verdict; it does not alter a rejection already decided.
 
-The shopkeeper keeps its native animations, sounds, discount amounts, price synchronization, failure consequences, and checkout. Failed scans can still damage or destroy items. No automatic shop-wide discount or free upgrade is added.
+The shopkeeper keeps its native animations, sounds, discount amounts, price synchronization, and checkout. `BreakAfterFailures` delays the native failure destruction effect until the same physical item accumulates that many failed verdicts. Success does not reset the count; different item copies are independent. Before the threshold, the normal rejection/shake/toss still plays. At the threshold, the original destruction effect and timing are used. Default 1 preserves first-failure destruction. This does not protect against unrelated damage or persist counts across replacement/save reloads. No automatic shop-wide discount or free upgrade is added.
 
 ## Installation
 

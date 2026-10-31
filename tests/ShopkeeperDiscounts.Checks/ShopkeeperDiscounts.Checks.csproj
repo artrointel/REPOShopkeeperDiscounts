@@ -7,6 +7,7 @@
     <GameManagedDirectory Condition="'$(GameManagedDirectory)' == ''">C:/Program Files (x86)/Steam/steamapps/common/REPO/REPO_Data/Managed</GameManagedDirectory>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../../src/ShopkeeperDiscounts/FailedDiscountCounter.cs" Link="FailedDiscountCounter.cs" />
     <Compile Include="../../src/ShopkeeperDiscounts/DiscountRules.cs" Link="DiscountRules.cs" />
     <Compile Include="../../src/ShopkeeperDiscounts/DiscountSettings.cs" Link="DiscountSettings.cs" />
     <Compile Include="../../src/ShopkeeperDiscounts/DiscountIlRewriter.cs" Link="DiscountIlRewriter.cs" />

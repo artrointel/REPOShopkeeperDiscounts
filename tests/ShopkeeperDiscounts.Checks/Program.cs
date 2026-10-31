@@ -27,8 +27,13 @@ try
 {
     var config = new ConfigFile(scratch, false);
     var settings = new DiscountSettings(config);
-    Check(config.Count == 2, "REPOConfig must discover exactly the two requested settings.");
+    Check(config.Count == 3, "REPOConfig must discover all three settings.");
     Check(settings.ChancePercent.DefaultValue.Equals(70) && settings.AttemptsPerShop.DefaultValue.Equals(5), "Unexpected defaults.");
+    Check(settings.BreakAfterFailures.DefaultValue.Equals(1), "Break threshold must default to one.");
+    settings.BreakAfterFailures.Value = 0;
+    Check(settings.BreakAfterFailures.Value == 1, "Break threshold below one was not clamped.");
+    settings.BreakAfterFailures.Value = 6;
+    Check(settings.BreakAfterFailures.Value == 5, "Break threshold above five was not clamped.");
     settings.ChancePercent.Value = -1;
     Check(settings.ChancePercent.Value == 0, "Chance below zero was not clamped.");
     settings.ChancePercent.Value = 101;
@@ -39,10 +44,50 @@ try
     Check(settings.AttemptsPerShop.Value == 10, "Attempt limit above 10 was not clamped.");
     config.Save();
     var reloaded = new DiscountSettings(new ConfigFile(scratch, false));
-    Check(reloaded.ChancePercent.Value == 100 && reloaded.AttemptsPerShop.Value == 10, "Settings did not persist.");
+    Check(reloaded.ChancePercent.Value == 100 && reloaded.AttemptsPerShop.Value == 10 && reloaded.BreakAfterFailures.Value == 5, "Settings did not persist.");
 }
 finally { if (File.Exists(scratch)) File.Delete(scratch); }
 
+// Per-item accounting counts actual failed verdicts, not successful discounts,
+// global attempts, item types, frames, or repeated native effect callbacks.
+for (int threshold = 1; threshold <= 5; threshold++)
+{
+    var item = new FailedDiscountCounter();
+    int sequence = 0;
+    for (int failure = 1; failure <= threshold; failure++)
+    {
+        item.ObserveVerdict(++sequence, true, threshold);
+        Check(item.Failures == failure && item.BreakAllowed == (failure >= threshold),
+            "Item destruction did not match the cumulative failure threshold.");
+        item.ObserveVerdict(sequence, true, threshold);
+        Check(item.Failures == failure, "Duplicate verdict counted twice.");
+        item.ObserveVerdict(++sequence, false, threshold);
+        Check(item.Failures == failure && !item.BreakAllowed, "Success reset failures or inherited a rejection effect.");
+    }
+}
+var firstItem = new FailedDiscountCounter();
+var secondItem = new FailedDiscountCounter();
+firstItem.ObserveVerdict(1, true, 3);
+firstItem.ObserveVerdict(2, true, 3);
+secondItem.ObserveVerdict(1, true, 3);
+Check(firstItem.Failures == 2 && secondItem.Failures == 1, "Different physical items shared a counter.");
+firstItem.ObserveVerdict(3, false, 3);
+firstItem.ObserveVerdict(4, true, 3);
+Check(firstItem.Failures == 3 && firstItem.BreakAllowed, "Interleaved success erased cumulative failures.");
+firstItem.ObserveVerdict(2, true, 1);
+Check(firstItem.Failures == 3 && firstItem.BreakAllowed, "Stale verdict rewrote item state.");
+var changing = new FailedDiscountCounter();
+changing.ObserveVerdict(1, true, 5);
+Check(!changing.BreakAllowed, "A protected failure was not preserved.");
+changing.ObserveVerdict(1, true, 1);
+Check(!changing.BreakAllowed && changing.Failures == 1, "A live config edit changed an already decided verdict.");
+changing.ObserveVerdict(2, true, 1);
+Check(changing.BreakAllowed && changing.Failures == 2, "New verdict did not use the new threshold.");
+var invalidThreshold = new FailedDiscountCounter();
+invalidThreshold.ObserveVerdict(1, true, 0);
+Check(invalidThreshold.BreakAllowed, "Invalid lower threshold was not bounded to one.");
+var freshItem = new FailedDiscountCounter();
+Check(freshItem.Failures == 0 && !freshItem.BreakAllowed, "A replacement item inherited old failures.");
 var counter = typeof(CounterFixture).GetField(nameof(CounterFixture.Used))!;
 var getter = typeof(CounterFixture).GetMethod(nameof(CounterFixture.Limit))!;
 var fixture = new DynamicMethod("DiscountLimit", typeof(bool), new[] { typeof(CounterFixture) });
@@ -113,6 +158,16 @@ Check(rpc.Body.Instructions.Count(i => i.OpCode.Code == Mono.Cecil.Cil.Code.Stfl
 foreach (string nativeMethod in new[] { "ItemDiscountApply", "ShopKeeperStateSend", "ItemShownSet" })
     Check(keeper.Methods.Single(m => m.Name == nativeMethod).Body.Instructions.Any(i =>
         i.Operand is MethodReference method && method.Name == "RPC"), $"Native outcome synchronization missing: {nativeMethod}");
+var rejection = keeper.Methods.Single(m => m.Name == "ItemDislikeAffectApply");
+Check(rejection.Parameters.Count == 1 && rejection.Parameters[0].ParameterType.Name == "PhysGrabObject", "Native rejection entry changed.");
+Check(rejection.Body.Instructions.Any(i => i.Operand is string value && value == "ItemDislikeAffectApplyRPC"),
+    "Native destruction-effect RPC is missing.");
+var shown = keeper.Methods.Single(m => m.Name == "ItemShownSet");
+Check(shown.Parameters.Count == 3 && shown.Parameters[1].ParameterType.FullName == "System.Int32" &&
+    shown.Parameters[2].ParameterType.FullName == "System.Boolean", "Native verdict sequence/rejection contract changed.");
+Check(keeper.Methods.Single(m => m.Name == "ItemRejectionFinish").Body.Instructions.Any(i =>
+    i.Operand is MethodReference method && method.Name == "ItemDislikeAffectApply"),
+    "Native delayed destruction no longer passes through the guarded entry.");
 foreach (string configuration in new[] { "Debug", "Release" })
 {
     using var plugin = AssemblyDefinition.ReadAssembly(Path.Combine(root, "src/ShopkeeperDiscounts/bin", configuration, "netstandard2.1/ShopkeeperDiscounts.dll"), parameters);
@@ -127,6 +182,14 @@ foreach (string configuration in new[] { "Debug", "Release" })
             _ => true
         }, $"Missing installed-game API: {reference.FullName}");
     }
+    Check(plugin.MainModule.Types.Any(t => t.Name == "ItemFailureTracker"), "Per-item host-local tracker missing.");
+    foreach (string name in new[] { "ItemFailureVerdictPatch", "ItemFailureDestructionPatch" })
+        Check(plugin.MainModule.Types.Single(t => t.Name == name).Methods.Single(m => m.Name == "Prefix")
+            .Body.Instructions.Any(i => i.Operand is MethodReference method && method.Name == "IsMasterClientOrSingleplayer"),
+            $"Failure bookkeeping must remain host-only: {name}");
+    var guard = plugin.MainModule.Types.Single(t => t.Name == "ItemFailureDestructionPatch");
+    Check(!guard.Methods.SelectMany(m => m.Body.Instructions).Any(i => i.Operand is MethodReference method &&
+        method.Name is "Destroy" or "DestroyObject" or "RPC"), "Failure guard must defer to native destruction rather than invent a second path.");
     var hostPatch = plugin.MainModule.Types.Single(t => t.Name == "HostAttemptCounterPatch");
     Check(hostPatch.Methods.Any(m => m.Name == "Prefix") && hostPatch.Methods.Any(m => m.Name == "Postfix"), "Host counter preservation missing.");
 }
