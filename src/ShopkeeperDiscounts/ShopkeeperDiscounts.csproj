@@ -8,7 +8,7 @@
     <RootNamespace>ShopkeeperDiscounts</RootNamespace>
     <Authors>artrointel</Authors>
     <Version>0.1.1</Version>
-    <Description>Configure the vanilla shopkeeper discount chance and attempts. Host-only, with REPOConfig support.</Description>
+    <Description>Configure shopkeeper discount chance, attempts per shop, and per-item failure tolerance. Host-only, with REPOConfig support.</Description>
     <InstalledGameManagedDirectory>$(GameDirectory)/REPO_Data/Managed</InstalledGameManagedDirectory>
   </PropertyGroup>
   <ItemGroup>

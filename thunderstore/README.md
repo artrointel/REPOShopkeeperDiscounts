@@ -1,6 +1,8 @@
 # ShopkeeperDiscounts
 
-**Tune the vanilla shopkeeper discount ritual. Only the host installs the mod; friends can stay completely vanilla.**
+**More chances to bargain. Fewer broken purchases. Only the host installs the mod; friends can stay completely vanilla.**
+
+Customize the shopkeeper discount ritual introduced in R.E.P.O. 0.5.0: choose the success chance, the shared attempts per shop, and how many failed attempts each item can survive. Defaults give you a **70% success chance and 5 attempts per shop**, with native first-failure destruction unless you raise the break threshold.
 
 Use REPOConfig's **Mods → ShopkeeperDiscounts** settings on the host:
 
@@ -22,4 +24,4 @@ Install this package on the host with a Thunderstore-compatible mod manager. It 
 
 Manual config: `BepInEx/config/artrointel.ShopkeeperDiscounts.cfg`.
 
-Targets R.E.P.O. 0.5.0 (The Sunstone Update). Initial build: automated tests pass; in-game UI and host/unmodded-client testing are still pending.
+Targets R.E.P.O. 0.5.0 (The Sunstone Update).
