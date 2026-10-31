@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>ShopDiscountBot</AssemblyName>
+    <RootNamespace>ShopDiscountBot</RootNamespace>
+    <Authors>artrointel</Authors>
+    <Version>0.1.0</Version>
+    <Description>Configure the vanilla shopkeeper discount chance and attempts. Host-only, with REPOConfig support.</Description>
+    <InstalledGameManagedDirectory>$(GameDirectory)/REPO_Data/Managed</InstalledGameManagedDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp" HintPath="$(InstalledGameManagedDirectory)/Assembly-CSharp.dll" Private="false" />
+    <Reference Include="PhotonUnityNetworking" HintPath="$(InstalledGameManagedDirectory)/PhotonUnityNetworking.dll" Private="false" />
+    <Reference Include="PhotonRealtime" HintPath="$(InstalledGameManagedDirectory)/PhotonRealtime.dll" Private="false" />
+    <Reference Include="Photon3Unity3D" HintPath="$(InstalledGameManagedDirectory)/Photon3Unity3D.dll" Private="false" />
+    <Reference Include="$(InstalledGameManagedDirectory)/UnityEngine*.dll" Private="false" />
+    <PackageReference Include="BepInEx.Analyzers" Version="1.0.8" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" ExcludeAssets="runtime" />
+    <PackageReference Include="Linkoid.Repo.Plugin.Build" Version="0.2.2" PrivateAssets="all" />
+  </ItemGroup>
+  <Target Name="RequireInstalledGame" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(InstalledGameManagedDirectory)/Assembly-CSharp.dll')" Text="Install R.E.P.O. 0.5.0 and set GameDirectory in Directory.Repo.props." />
+  </Target>
+</Project>

@@ -1,0 +1,9 @@
+bin/
+obj/
+artifacts/
+.dotnet/
+.dotnet-home/
+.nuget/
+.tools/
+*.user
+Directory.Repo.props

@@ -1,0 +1,70 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ShopDiscountBot: Build + Deploy (Debug)",
+      "type": "process",
+      "command": "${workspaceFolder}\\.dotnet\\dotnet.exe",
+      "args": [
+        "build",
+        "${workspaceFolder}\\src\\ShopDiscountBot\\ShopDiscountBot.csproj",
+        "--configuration",
+        "Debug"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "DOTNET_CLI_HOME": "${workspaceFolder}\\.dotnet-home",
+          "NUGET_PACKAGES": "${workspaceFolder}\\.nuget\\packages",
+          "DOTNET_CLI_TELEMETRY_OPTOUT": "1"
+        }
+      },
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "ShopDiscountBot: Start game",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\scripts\\Start-RepoDev.ps1"
+      ],
+      "dependsOn": "ShopDiscountBot: Build + Deploy (Debug)",
+      "problemMatcher": []
+    },
+    {
+      "label": "ShopDiscountBot: Start game with debugger",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\scripts\\Start-RepoDev.ps1",
+        "-EnableDebugger"
+      ],
+      "dependsOn": "ShopDiscountBot: Build + Deploy (Debug)",
+      "problemMatcher": []
+    },
+    {
+      "label": "ShopDiscountBot: Watch BepInEx log",
+      "type": "shell",
+      "command": "Get-Content -LiteralPath '${env:APPDATA}\\Thunderstore Mod Manager\\DataFolder\\REPO\\profiles\\ShopDiscountBot-Test\\BepInEx\\LogOutput.log' -Tail 100 -Wait",
+      "options": {
+        "shell": {
+          "executable": "powershell.exe",
+          "args": ["-NoProfile", "-Command"]
+        }
+      },
+      "problemMatcher": []
+    }
+  ]
+}

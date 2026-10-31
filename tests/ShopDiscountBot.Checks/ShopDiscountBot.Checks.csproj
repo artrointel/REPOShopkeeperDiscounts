@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GameManagedDirectory Condition="'$(GameManagedDirectory)' == ''">C:/Program Files (x86)/Steam/steamapps/common/REPO/REPO_Data/Managed</GameManagedDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/ShopDiscountBot/DiscountRules.cs" Link="DiscountRules.cs" />
+    <Compile Include="../../src/ShopDiscountBot/DiscountSettings.cs" Link="DiscountSettings.cs" />
+    <Compile Include="../../src/ShopDiscountBot/DiscountIlRewriter.cs" Link="DiscountIlRewriter.cs" />
+    <Reference Include="Assembly-CSharp" HintPath="$(GameManagedDirectory)/Assembly-CSharp.dll" />
+    <Reference Include="$(GameManagedDirectory)/UnityEngine*.dll" />
+    <Reference Include="$(GameManagedDirectory)/Photon*.dll" />
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" ExcludeAssets="build" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.4" />
+  </ItemGroup>
+</Project>
