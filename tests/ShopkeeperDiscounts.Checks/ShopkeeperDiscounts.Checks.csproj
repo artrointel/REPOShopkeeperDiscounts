@@ -7,9 +7,9 @@
     <GameManagedDirectory Condition="'$(GameManagedDirectory)' == ''">C:/Program Files (x86)/Steam/steamapps/common/REPO/REPO_Data/Managed</GameManagedDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="../../src/ShopDiscountBot/DiscountRules.cs" Link="DiscountRules.cs" />
-    <Compile Include="../../src/ShopDiscountBot/DiscountSettings.cs" Link="DiscountSettings.cs" />
-    <Compile Include="../../src/ShopDiscountBot/DiscountIlRewriter.cs" Link="DiscountIlRewriter.cs" />
+    <Compile Include="../../src/ShopkeeperDiscounts/DiscountRules.cs" Link="DiscountRules.cs" />
+    <Compile Include="../../src/ShopkeeperDiscounts/DiscountSettings.cs" Link="DiscountSettings.cs" />
+    <Compile Include="../../src/ShopkeeperDiscounts/DiscountIlRewriter.cs" Link="DiscountIlRewriter.cs" />
     <Reference Include="Assembly-CSharp" HintPath="$(GameManagedDirectory)/Assembly-CSharp.dll" />
     <Reference Include="$(GameManagedDirectory)/UnityEngine*.dll" />
     <Reference Include="$(GameManagedDirectory)/Photon*.dll" />

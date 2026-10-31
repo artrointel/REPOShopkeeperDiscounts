@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [switch]$EnableDebugger,
-    [string]$ProfileName = 'ShopDiscountBot-Test'
+    [string]$ProfileName = 'ShopkeeperDiscounts-Test'
 )
 
 $ErrorActionPreference = "Stop"

@@ -2,6 +2,8 @@
 
 ## 0.1.0
 
+- Name the mod ShopkeeperDiscounts and the project REPOShopkeeperDiscounts.
+
 - Default to a 70% positive verdict chance and five shared attempts per shop.
 
 - Configure the vanilla shopkeeper positive verdict chance from 0 to 100 percent.

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 
-namespace ShopDiscountBot;
+namespace ShopkeeperDiscounts;
 
 // Kept separate so the exact production rewrite can be tested against native IL.
 internal static class DiscountIlRewriter

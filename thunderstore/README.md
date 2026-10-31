@@ -1,8 +1,8 @@
-# ShopDiscountBot
+# ShopkeeperDiscounts
 
 **Tune the vanilla shopkeeper discount ritual. Only the host installs the mod; friends can stay completely vanilla.**
 
-Use REPOConfig's **Mods → ShopDiscountBot** settings on the host:
+Use REPOConfig's **Mods → ShopkeeperDiscounts** settings on the host:
 
 | Setting | Range | Default |
 | --- | --- | --- |
@@ -19,6 +19,6 @@ The shopkeeper keeps its native animations, sounds, discount amounts, price sync
 
 Install this package on the host with a Thunderstore-compatible mod manager. It installs BepInExPack and the community-maintained REPOConfig; REPOConfig installs MenuLib. Joining players do not need any of these mods.
 
-Manual config: `BepInEx/config/artrointel.ShopDiscountBot.cfg`.
+Manual config: `BepInEx/config/artrointel.ShopkeeperDiscounts.cfg`.
 
 Targets R.E.P.O. 0.5.0 (The Sunstone Update). Initial build: automated tests pass; in-game UI and host/unmodded-client testing are still pending.

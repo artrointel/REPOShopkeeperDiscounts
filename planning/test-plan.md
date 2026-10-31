@@ -1,6 +1,6 @@
-# ShopDiscountBot manual test plan
+# ShopkeeperDiscounts manual test plan
 
-1. Launch the dedicated profile and verify ShopDiscountBot, REPOConfig, and MenuLib load without errors. Open Mods → ShopDiscountBot and confirm ChancePercent is bounded to 0–100 and AttemptsPerShop to 0–10. Save, restart, and confirm persistence.
+1. Launch the dedicated profile and verify ShopkeeperDiscounts, REPOConfig, and MenuLib load without errors. Open Mods → ShopkeeperDiscounts and confirm ChancePercent is bounded to 0–100 and AttemptsPerShop to 0–10. Save, restart, and confirm persistence.
 2. Set ChancePercent=100 and AttemptsPerShop=10. Present valid, non-free shop items ten times. The first ten accepted scans must succeed; the eleventh request must be denied. In particular, the fourth and later attempts must work and the allowance must stop at ten.
 3. Set ChancePercent=0 and AttemptsPerShop=3. Every valid verdict must fail using the native negative reaction. Failed scans must consume attempts; no fourth scan should be accepted. Normal item destruction/damage rules remain in effect.
 4. Set AttemptsPerShop=0. No discount scan should be accepted. Ordinary shop checkout and shopkeeper behavior should still work.

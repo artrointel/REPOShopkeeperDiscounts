@@ -1,12 +1,12 @@
-# ShopDiscountBot
+# ShopkeeperDiscounts
 
 Configure the **vanilla shopkeeper item-discount ritual** in R.E.P.O. 0.5.0. Only the host needs this mod and its configuration UI dependencies; joining players can remain completely vanilla.
 
-Project/repository folder: `REPOShopDiscountBot`. Plugin/package name: `ShopDiscountBot`. [Source repository](https://github.com/artrointel/REPOShopDiscountBot).
+Project/repository folder: `REPOShopkeeperDiscounts`. Plugin/package name: `ShopkeeperDiscounts`. [Source repository](https://github.com/artrointel/REPOShopkeeperDiscounts).
 
 ## Settings
 
-Open **Mods → ShopDiscountBot** in REPOConfig on the host. Settings are also saved to `BepInEx/config/artrointel.ShopDiscountBot.cfg`.
+Open **Mods → ShopkeeperDiscounts** in REPOConfig on the host. Settings are also saved to `BepInEx/config/artrointel.ShopkeeperDiscounts.cfg`.
 
 | Setting | Range | Default | Meaning |
 | --- | --- | --- | --- |
@@ -34,10 +34,10 @@ The repository includes an ignored local .NET 9 SDK and package cache for this w
 ```powershell
 $env:DOTNET_CLI_HOME = "$PWD\.dotnet-home"
 $env:NUGET_PACKAGES = "$PWD\.nuget\packages"
-.\.dotnet\dotnet.exe restore src/ShopDiscountBot/ShopDiscountBot.csproj
-.\.dotnet\dotnet.exe build src/ShopDiscountBot/ShopDiscountBot.csproj -c Debug -p:CopyFilesToPluginOutputDirectoryOnBuild=false
-.\.dotnet\dotnet.exe build src/ShopDiscountBot/ShopDiscountBot.csproj -c Release -p:CopyFilesToPluginOutputDirectoryOnBuild=false
-.\.dotnet\dotnet.exe run --project tests/ShopDiscountBot.Checks/ShopDiscountBot.Checks.csproj
+.\.dotnet\dotnet.exe restore src/ShopkeeperDiscounts/ShopkeeperDiscounts.csproj
+.\.dotnet\dotnet.exe build src/ShopkeeperDiscounts/ShopkeeperDiscounts.csproj -c Debug -p:CopyFilesToPluginOutputDirectoryOnBuild=false
+.\.dotnet\dotnet.exe build src/ShopkeeperDiscounts/ShopkeeperDiscounts.csproj -c Release -p:CopyFilesToPluginOutputDirectoryOnBuild=false
+.\.dotnet\dotnet.exe run --project tests/ShopkeeperDiscounts.Checks/ShopkeeperDiscounts.Checks.csproj
 ```
 
 Builds reference installed R.E.P.O. 0.5.0 / Unity 6 assemblies directly. Game assemblies and test libraries are never included in the release ZIP. No game files are modified.
@@ -49,12 +49,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Setup-TestProfil
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Start-RepoDev.ps1
 ```
 
-The isolated `ShopDiscountBot-Test` profile contains BepInEx, ShopDiscountBot, REPOConfig, and MenuLib. Setup does not alter other profiles or start/stop a game. Close any running R.E.P.O. instance before launching.
+The isolated `ShopkeeperDiscounts-Test` profile contains BepInEx, ShopkeeperDiscounts, REPOConfig, and MenuLib. Setup does not alter other profiles or start/stop a game. Close any running R.E.P.O. instance before launching.
 
 - `Ctrl+Shift+B`: build and deploy Debug to the dedicated profile.
-- `ShopDiscountBot: Start game`: build, deploy, and launch that profile.
+- `ShopkeeperDiscounts: Start game`: build, deploy, and launch that profile.
 - `F5`: launch with the Mono debugger and attach at `127.0.0.1:10000`.
-- `ShopDiscountBot: Watch BepInEx log`: follow the dedicated profile log.
+- `ShopkeeperDiscounts: Watch BepInEx log`: follow the dedicated profile log.
 
 No development item spawns, F8 probes, or in-game test shortcuts are included in either build configuration.
 
@@ -64,6 +64,6 @@ No development item spawns, F8 probes, or in-game test shortcuts are included in
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Pack-Thunderstore.ps1 -NoRestore
 ```
 
-Creates `artifacts/ShopDiscountBot-0.1.0.zip` from Release without deploying. The included simple development icon can be replaced before public release. The manifest links to the source repository. The package has not been published to Thunderstore.
+Creates `artifacts/ShopkeeperDiscounts-0.1.0.zip` from Release without deploying. The included simple development icon can be replaced before public release. The manifest links to the source repository. The package has not been published to Thunderstore.
 
 See [the implementation notes](planning/README.md) and [manual test plan](planning/test-plan.md). Automated checks do not replace actual host/unmodded-client gameplay or verification of the settings UI in the game.

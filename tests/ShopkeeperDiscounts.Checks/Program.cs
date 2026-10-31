@@ -3,7 +3,7 @@ using System.Reflection.Emit;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Mono.Cecil;
-using ShopDiscountBot;
+using ShopkeeperDiscounts;
 
 int checks = 0;
 void Check(bool condition, string message)
@@ -115,7 +115,7 @@ foreach (string nativeMethod in new[] { "ItemDiscountApply", "ShopKeeperStateSen
         i.Operand is MethodReference method && method.Name == "RPC"), $"Native outcome synchronization missing: {nativeMethod}");
 foreach (string configuration in new[] { "Debug", "Release" })
 {
-    using var plugin = AssemblyDefinition.ReadAssembly(Path.Combine(root, "src/ShopDiscountBot/bin", configuration, "netstandard2.1/ShopDiscountBot.dll"), parameters);
+    using var plugin = AssemblyDefinition.ReadAssembly(Path.Combine(root, "src/ShopkeeperDiscounts/bin", configuration, "netstandard2.1/ShopkeeperDiscounts.dll"), parameters);
     Check(!plugin.MainModule.Types.SelectMany(t => t.Methods).Any(m => m.CustomAttributes.Any(a => a.AttributeType.Name == "PunRPC")), "Custom RPC introduced.");
     Check(!plugin.MainModule.GetTypeReferences().Any(t => t.Name == "PhotonStream"), "Custom stream code introduced.");
     foreach (MemberReference reference in plugin.MainModule.GetMemberReferences())
@@ -132,8 +132,8 @@ foreach (string configuration in new[] { "Debug", "Release" })
 }
 // Execute the production postfix against an uninitialized managed wrapper. This
 // touches only an int field: no Unity object constructor or native engine call.
-var production = Assembly.LoadFrom(Path.Combine(root, "src/ShopDiscountBot/bin/Release/netstandard2.1/ShopDiscountBot.dll"));
-var preserve = production.GetType("ShopDiscountBot.HostAttemptCounterPatch")!
+var production = Assembly.LoadFrom(Path.Combine(root, "src/ShopkeeperDiscounts/bin/Release/netstandard2.1/ShopkeeperDiscounts.dll"));
+var preserve = production.GetType("ShopkeeperDiscounts.HostAttemptCounterPatch")!
     .GetMethod("Postfix", BindingFlags.Static | BindingFlags.NonPublic)!;
 var wrapper = (ShopKeeper)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(ShopKeeper));
 for (int used = 0; used <= 10; used++)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 
-namespace ShopDiscountBot;
+namespace ShopkeeperDiscounts;
 
 internal static class ShopBindings
 {

@@ -3,13 +3,13 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 
-namespace ShopDiscountBot;
+namespace ShopkeeperDiscounts;
 
 [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 public sealed class Plugin : BaseUnityPlugin
 {
-    public const string PluginGuid = "artrointel.ShopDiscountBot";
-    public const string PluginName = "ShopDiscountBot";
+    public const string PluginGuid = "artrointel.ShopkeeperDiscounts";
+    public const string PluginName = "ShopkeeperDiscounts";
     public const string PluginVersion = "0.1.0";
     internal static DiscountSettings Settings { get; private set; } = null!;
     private Harmony? _harmony;
@@ -27,7 +27,7 @@ public sealed class Plugin : BaseUnityPlugin
         catch (Exception exception)
         {
             _harmony.UnpatchSelf();
-            Logger.LogError($"Initialization failed; all ShopDiscountBot hooks were removed: {exception}");
+            Logger.LogError($"Initialization failed; all ShopkeeperDiscounts hooks were removed: {exception}");
             enabled = false;
         }
     }

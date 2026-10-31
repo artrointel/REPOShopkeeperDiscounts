@@ -1,4 +1,4 @@
-# ShopDiscountBot implementation contract
+# ShopkeeperDiscounts implementation contract
 
 Target: R.E.P.O. 0.5.0, Steam build 26294889, Unity 6000.3.17. Fixed host; no host migration feature.
 

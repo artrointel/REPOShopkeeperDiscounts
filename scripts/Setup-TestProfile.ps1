@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidatePattern('^[A-Za-z0-9_-]+$')]
-    [string]$ProfileName = 'ShopDiscountBot-Test',
+    [string]$ProfileName = 'ShopkeeperDiscounts-Test',
     [string]$CoreSource,
     [switch]$NoRestore
 )
@@ -36,11 +36,11 @@ foreach ($package in @(@{ Name='REPOConfig'; Version='1.2.7' }, @{ Name='MenuLib
 $env:DOTNET_CLI_HOME = Join-Path $projectRoot '.dotnet-home'
 $env:NUGET_PACKAGES = Join-Path $projectRoot '.nuget/packages'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
-$argsBuild = @('build', (Join-Path $projectRoot 'src/ShopDiscountBot/ShopDiscountBot.csproj'), '-c', 'Debug', '-p:CopyFilesToPluginOutputDirectoryOnBuild=false')
+$argsBuild = @('build', (Join-Path $projectRoot 'src/ShopkeeperDiscounts/ShopkeeperDiscounts.csproj'), '-c', 'Debug', '-p:CopyFilesToPluginOutputDirectoryOnBuild=false')
 if ($NoRestore) { $argsBuild += '--no-restore' }
 & (Join-Path $projectRoot '.dotnet/dotnet.exe') @argsBuild
 if ($LASTEXITCODE -ne 0) { throw 'Debug build failed.' }
-$destination = Join-Path $plugins 'ShopDiscountBot'
+$destination = Join-Path $plugins 'ShopkeeperDiscounts'
 New-Item -ItemType Directory -Path $destination -Force | Out-Null
-Copy-Item -LiteralPath (Join-Path $projectRoot 'src/ShopDiscountBot/bin/Debug/netstandard2.1/ShopDiscountBot.dll') -Destination $destination -Force
+Copy-Item -LiteralPath (Join-Path $projectRoot 'src/ShopkeeperDiscounts/bin/Debug/netstandard2.1/ShopkeeperDiscounts.dll') -Destination $destination -Force
 Write-Host "Test profile ready: $profile"

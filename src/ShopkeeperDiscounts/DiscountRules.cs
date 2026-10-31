@@ -1,6 +1,6 @@
 using System;
 
-namespace ShopDiscountBot;
+namespace ShopkeeperDiscounts;
 
 internal static class DiscountRules
 {

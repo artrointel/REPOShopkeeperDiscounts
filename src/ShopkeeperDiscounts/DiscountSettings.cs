@@ -1,6 +1,6 @@
 using BepInEx.Configuration;
 
-namespace ShopDiscountBot;
+namespace ShopkeeperDiscounts;
 
 internal sealed class DiscountSettings
 {

@@ -4,8 +4,8 @@
     <LangVersion>12</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <AssemblyName>ShopDiscountBot</AssemblyName>
-    <RootNamespace>ShopDiscountBot</RootNamespace>
+    <AssemblyName>ShopkeeperDiscounts</AssemblyName>
+    <RootNamespace>ShopkeeperDiscounts</RootNamespace>
     <Authors>artrointel</Authors>
     <Version>0.1.0</Version>
     <Description>Configure the vanilla shopkeeper discount chance and attempts. Host-only, with REPOConfig support.</Description>

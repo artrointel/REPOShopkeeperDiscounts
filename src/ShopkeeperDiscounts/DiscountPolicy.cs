@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ShopDiscountBot;
+namespace ShopkeeperDiscounts;
 
 internal static class DiscountPolicy
 {

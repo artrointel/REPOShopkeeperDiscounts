@@ -7,7 +7,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$projectFile = Join-Path $projectRoot "src\ShopDiscountBot\ShopDiscountBot.csproj"
+$projectFile = Join-Path $projectRoot "src\ShopkeeperDiscounts\ShopkeeperDiscounts.csproj"
 $metadataDirectory = Join-Path $projectRoot "thunderstore"
 $iconPath = Join-Path $metadataDirectory "icon.png"
 $localDotnet = Join-Path $projectRoot ".dotnet\dotnet.exe"
@@ -41,13 +41,13 @@ finally {
 $versionNode = $project.SelectSingleNode("/Project/PropertyGroup/Version")
 $version = if ($null -eq $versionNode) { "" } else { $versionNode.InnerText.Trim() }
 if ([string]::IsNullOrWhiteSpace($version)) {
-    throw "Version was not found in ShopDiscountBot.csproj."
+    throw "Version was not found in ShopkeeperDiscounts.csproj."
 }
 
 $authorNode = $project.SelectSingleNode("/Project/PropertyGroup/Authors")
 $author = if ($null -eq $authorNode) { "" } else { $authorNode.InnerText.Trim() }
 if ([string]::IsNullOrWhiteSpace($author) -or $author -like "TODO*") {
-    throw "Set Authors in ShopDiscountBot.csproj to your Thunderstore team/author name."
+    throw "Set Authors in ShopkeeperDiscounts.csproj to your Thunderstore team/author name."
 }
 
 $manifestPath = Join-Path $metadataDirectory "manifest.json"
@@ -59,7 +59,7 @@ if ($manifest.website_url -like "*TODO*") {
     throw "Set website_url in manifest.json to the actual project URL."
 }
 
-$pluginSource = Get-Content -LiteralPath (Join-Path $projectRoot "src\ShopDiscountBot\Plugin.cs") -Raw -Encoding UTF8
+$pluginSource = Get-Content -LiteralPath (Join-Path $projectRoot "src\ShopkeeperDiscounts\Plugin.cs") -Raw -Encoding UTF8
 $pluginVersionMatch = [regex]::Match($pluginSource, 'PluginVersion\s*=\s*"(?<version>[^"]+)"')
 if (-not $pluginVersionMatch.Success -or $pluginVersionMatch.Groups["version"].Value -ne $version) {
     throw "Version mismatch: csproj=$version, Plugin.cs=$($pluginVersionMatch.Groups['version'].Value)"
@@ -80,14 +80,14 @@ if ($LASTEXITCODE -ne 0) {
     throw "Build failed."
 }
 
-$dllPath = Join-Path $projectRoot "src\ShopDiscountBot\bin\$Configuration\netstandard2.1\ShopDiscountBot.dll"
+$dllPath = Join-Path $projectRoot "src\ShopkeeperDiscounts\bin\$Configuration\netstandard2.1\ShopkeeperDiscounts.dll"
 if (-not (Test-Path -LiteralPath $dllPath -PathType Leaf)) {
     throw "Build output DLL was not found: $dllPath"
 }
 
 $artifactsDirectory = Join-Path $projectRoot "artifacts"
 $stagingDirectory = Join-Path $artifactsDirectory "thunderstore-staging"
-$packagePath = Join-Path $artifactsDirectory "ShopDiscountBot-$version.zip"
+$packagePath = Join-Path $artifactsDirectory "ShopkeeperDiscounts-$version.zip"
 
 # Check absolute targets before removing a previous staging directory or package.
 $artifactRoot = [IO.Path]::GetFullPath($artifactsDirectory).TrimEnd('\') + '\'
@@ -105,7 +105,7 @@ if (Test-Path -LiteralPath $packagePath) {
     Remove-Item -LiteralPath $packagePath -Force
 }
 
-$pluginDirectory = Join-Path $stagingDirectory "BepInEx\plugins\ShopDiscountBot"
+$pluginDirectory = Join-Path $stagingDirectory "BepInEx\plugins\ShopkeeperDiscounts"
 New-Item -ItemType Directory -Path $pluginDirectory -Force | Out-Null
 Copy-Item -LiteralPath $dllPath -Destination $pluginDirectory
 Copy-Item -LiteralPath $manifestPath -Destination $stagingDirectory

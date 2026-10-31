@@ -2,12 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "ShopDiscountBot: Build + Deploy (Debug)",
+      "label": "ShopkeeperDiscounts: Build + Deploy (Debug)",
       "type": "process",
       "command": "${workspaceFolder}\\.dotnet\\dotnet.exe",
       "args": [
         "build",
-        "${workspaceFolder}\\src\\ShopDiscountBot\\ShopDiscountBot.csproj",
+        "${workspaceFolder}\\src\\ShopkeeperDiscounts\\ShopkeeperDiscounts.csproj",
         "--configuration",
         "Debug"
       ],
@@ -26,7 +26,7 @@
       }
     },
     {
-      "label": "ShopDiscountBot: Start game",
+      "label": "ShopkeeperDiscounts: Start game",
       "type": "process",
       "command": "powershell.exe",
       "args": [
@@ -36,11 +36,11 @@
         "-File",
         "${workspaceFolder}\\scripts\\Start-RepoDev.ps1"
       ],
-      "dependsOn": "ShopDiscountBot: Build + Deploy (Debug)",
+      "dependsOn": "ShopkeeperDiscounts: Build + Deploy (Debug)",
       "problemMatcher": []
     },
     {
-      "label": "ShopDiscountBot: Start game with debugger",
+      "label": "ShopkeeperDiscounts: Start game with debugger",
       "type": "process",
       "command": "powershell.exe",
       "args": [
@@ -51,13 +51,13 @@
         "${workspaceFolder}\\scripts\\Start-RepoDev.ps1",
         "-EnableDebugger"
       ],
-      "dependsOn": "ShopDiscountBot: Build + Deploy (Debug)",
+      "dependsOn": "ShopkeeperDiscounts: Build + Deploy (Debug)",
       "problemMatcher": []
     },
     {
-      "label": "ShopDiscountBot: Watch BepInEx log",
+      "label": "ShopkeeperDiscounts: Watch BepInEx log",
       "type": "shell",
-      "command": "Get-Content -LiteralPath '${env:APPDATA}\\Thunderstore Mod Manager\\DataFolder\\REPO\\profiles\\ShopDiscountBot-Test\\BepInEx\\LogOutput.log' -Tail 100 -Wait",
+      "command": "Get-Content -LiteralPath '${env:APPDATA}\\Thunderstore Mod Manager\\DataFolder\\REPO\\profiles\\ShopkeeperDiscounts-Test\\BepInEx\\LogOutput.log' -Tail 100 -Wait",
       "options": {
         "shell": {
           "executable": "powershell.exe",
