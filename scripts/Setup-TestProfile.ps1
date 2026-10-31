@@ -40,6 +40,28 @@ $argsBuild = @('build', (Join-Path $projectRoot 'src/ShopkeeperDiscounts/Shopkee
 if ($NoRestore) { $argsBuild += '--no-restore' }
 & (Join-Path $projectRoot '.dotnet/dotnet.exe') @argsBuild
 if ($LASTEXITCODE -ne 0) { throw 'Debug build failed.' }
+# The former plugin GUID is different, so BepInEx would load both versions.
+# Move legacy files outside BepInEx before deploying the renamed plugin.
+$legacyFiles = @(Get-ChildItem -LiteralPath $plugins -Recurse -File -Filter 'ShopDiscountBot.dll')
+$legacyConfig = Join-Path $bep 'config/artrointel.ShopDiscountBot.cfg'
+if (Test-Path -LiteralPath $legacyConfig) { $legacyFiles += Get-Item -LiteralPath $legacyConfig }
+if ($legacyFiles.Count -gt 0) {
+    if (Get-Process -Name REPO -ErrorAction SilentlyContinue) {
+        throw 'Close R.E.P.O. before removing the legacy ShopDiscountBot plugin.'
+    }
+    $backupRoot = Join-Path $projectRoot ("artifacts/legacy-profile-backups/{0}/{1}" -f $ProfileName, [Guid]::NewGuid().ToString('N'))
+    $bepPrefix = [IO.Path]::GetFullPath($bep).TrimEnd('\') + '\'
+    foreach ($legacyFile in $legacyFiles) {
+        $legacyPath = [IO.Path]::GetFullPath($legacyFile.FullName)
+        if (-not $legacyPath.StartsWith($bepPrefix, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Legacy file is outside the selected profile: $legacyPath"
+        }
+        $backupPath = Join-Path $backupRoot $legacyPath.Substring($bepPrefix.Length)
+        New-Item -ItemType Directory -Path (Split-Path -Parent $backupPath) -Force | Out-Null
+        Move-Item -LiteralPath $legacyPath -Destination $backupPath
+    }
+    Write-Host "Legacy ShopDiscountBot files backed up to: $backupRoot"
+}
 $destination = Join-Path $plugins 'ShopkeeperDiscounts'
 New-Item -ItemType Directory -Path $destination -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $projectRoot 'src/ShopkeeperDiscounts/bin/Debug/netstandard2.1/ShopkeeperDiscounts.dll') -Destination $destination -Force
