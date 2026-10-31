@@ -67,10 +67,10 @@ No development item spawns, F8 probes, or in-game test shortcuts are included in
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/Pack-Thunderstore.ps1 -NoRestore
 ```
 
-Creates `artifacts/ShopkeeperDiscounts-0.1.1.zip` from Release without deploying. The package includes a 256x256 icon and links to the source repository. Version 0.1.1 is the initial public release package; earlier versions were development builds. Uploading to Thunderstore is a separate manual step.
+Creates `artifacts/ShopkeeperDiscounts-0.1.2.zip` from Release without deploying. The package includes a 256x256 icon and links to the source repository. Version 0.1.1 is the initial public release package; earlier versions were development builds. Uploading to Thunderstore is a separate manual step.
 
 See [the implementation notes](planning/README.md) and [manual test plan](planning/test-plan.md). Automated checks do not replace actual host/unmodded-client gameplay or verification of the settings UI in the game.
 
 ## Release validation
 
-The 0.1.1 release has 375 automated checks covering discount rules, configuration bounds/persistence, per-item failure counters, and patch compatibility with the installed game assemblies. The user confirmed in-game operation after the legacy development DLL was removed. A dedicated host/unmodded-client multiplayer test has not been recorded.
+The 0.1.2 release has 375 automated checks covering discount rules, configuration bounds/persistence, per-item failure counters, and patch compatibility with the installed game assemblies. The user confirmed in-game operation after the legacy development DLL was removed. A dedicated host/unmodded-client multiplayer test has not been recorded.

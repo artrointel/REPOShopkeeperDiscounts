@@ -1,6 +1,6 @@
 {
   "name": "ShopkeeperDiscounts",
-  "version_number": "0.1.1",
+  "version_number": "0.1.2",
   "website_url": "https://github.com/artrointel/REPOShopkeeperDiscounts",
   "description": "Configure shopkeeper discount chance, attempts per shop, and failures before an item breaks through REPOConfig. Only the host installs; friends can stay vanilla.",
   "dependencies": [

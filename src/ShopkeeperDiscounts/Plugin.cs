@@ -10,7 +10,7 @@ public sealed class Plugin : BaseUnityPlugin
 {
     public const string PluginGuid = "artrointel.ShopkeeperDiscounts";
     public const string PluginName = "ShopkeeperDiscounts";
-    public const string PluginVersion = "0.1.1";
+    public const string PluginVersion = "0.1.2";
     internal static DiscountSettings Settings { get; private set; } = null!;
     private Harmony? _harmony;
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Add a new illustrated shopkeeper icon matching the author's other R.E.P.O. mods.
+- No gameplay or configuration changes.
+
 ## 0.1.1
 
 Initial public release.
